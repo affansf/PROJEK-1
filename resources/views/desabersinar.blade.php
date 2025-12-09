@@ -1,135 +1,250 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desa Bersinar</title>
+@extends('layouts.app')
 
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+@section('title', 'Peta Kerawanan')
 
-    <!-- Bootstrap CSS -->
-    <link 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
-        rel="stylesheet">
-</head>
-<body>
+@section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{{ asset('css/desabersinar.css') }}">
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #00008B;">
-    <div class="container">
+<div class="container my-4">
 
-        <!-- LOGO -->
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="img/tuberna.png" alt="Logo" width="135" height="40" class="me-2">
-        </a>
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white fw-bold text-center">
+            PETA KERAWANAN PEREDARAN NARKOBA
+            <br>
+            KABUPATEN TULUNGAGUNG
+        </div>
 
-        <!-- Button Hamburger -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="text-center mb-3">
+            <div id="mapTulungagung"></div>
+        </div>
 
-        <!-- Menu -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
+        <style>
+            #mapTulungagung {
+                height: 350px;
+                width: 100%;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            }
+        </style>
 
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="/">Beranda</a>
-                </li>
+        <hr class="my-4">
 
-                <li class="nav-item mx-2">
-                    <a class="nav-link {{ request()->is('desabersinar') ? 'fw-bold text-white' : 'text-light' }}" 
-                       href="/desabersinar">Desa Bersinar</a>
-                </li>
+        <h5 class="fw-bold text-center mb-3">Filter Tingkat Kerawanan</h5>
 
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="/bukusaku">Buku saku</a>
-                </li>
+        {{-- Tombol Filter --}}
+        <div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
+            {{-- Tambahkan class 'btn-fixed' HANYA pada 4 tombol kategori ini --}}
+            <button class="btn filter-btn btn-fixed bg-danger text-white" data-filter="Bahaya">Bahaya</button>
+            <button class="btn filter-btn btn-fixed bg-warning text-dark" data-filter="Waspada">Waspada</button>
+            <button class="btn filter-btn btn-fixed bg-success text-white" data-filter="Siaga">Siaga</button>
+            <button class="btn filter-btn btn-fixed bg-info text-dark" data-filter="Aman">Aman</button>
+            
+            {{-- Tombol 'Tampilkan Semua' TIDAK diberi class btn-fixed agar ukurannya tetap menyesuaikan teks --}}
+            <button class="btn filter-btn bg-secondary text-white active" data-filter="all">
+                Tampilkan Semua
+            </button>
+        </div>
 
-                <li class="nav-item mx-2">
-                    <a class="nav-link"
-                    href="#submenuArtikel"
-                    data-bs-toggle="collapse"
-                    role="button"
-                    aria-expanded="false">
-                        Artikel & Berita ▼
-                    </a>
+        <hr class="my-4">
 
-                        <!-- Submenu (muncul tepat di bawahnya) -->
-                        <div id="submenuArtikel" class="collapse submenu-artikel">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a href="/narkoba" class="dropdown-item">Narkoba</a>
-                            </li>
+        <h5 class="fw-bold mt-3 text-center">Data Kasus Narkotika Tahun 2025/2026</h5>
 
-                            <li class="list-group-item">
-                                <a href="/p4gn" class="dropdown-item">P4GN</a>
-                            </li>
+        <div class="table-fixed-height">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mt-2 align-middle" id="tabelKerawanan">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th class="text-center">Kecamatan</th>
+                            <th class="text-center">Jumlah Kasus</th>
+                            <th class="text-center">Tingkat Kerawanan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-level="Bahaya">
+                            <td>Kedungwaru</td><td class="text-center">14</td>
+                            <td class="text-center"><span class="badge bg-danger">Bahaya</span></td>
+                        </tr>
+                        <tr data-level="Bahaya">
+                            <td>Ngunut</td><td class="text-center">13</td>
+                            <td class="text-center"><span class="badge bg-danger">Bahaya</span></td>
+                        </tr>
+                        <tr data-level="Bahaya">
+                            <td>Tulungagung</td><td class="text-center">8</td>
+                            <td class="text-center"><span class="badge bg-danger">Bahaya</span></td>
+                        </tr>
 
-                            <li class="list-group-item">
-                                <a href="/rehabilitasi" class="dropdown-item">Rehabilitasi & Pemulihan</a>
-                            </li>
+                        <tr data-level="Waspada">
+                            <td>Boyolangu</td><td class="text-center">6</td>
+                            <td class="text-center"><span class="badge bg-warning text-dark">Waspada</span></td>
+                        </tr>
+                        <tr data-level="Waspada">
+                            <td>Ngantru</td><td class="text-center">6</td>
+                            <td class="text-center"><span class="badge bg-warning text-dark">Waspada</span></td>
+                        </tr>
+                        <tr data-level="Waspada">
+                            <td>Sumbergempol</td><td class="text-center">6</td>
+                            <td class="text-center"><span class="badge bg-warning text-dark">Waspada</span></td>
+                        </tr>
+                        <tr data-level="Waspada">
+                            <td>Kauman (Kalangbret)</td><td class="text-center">6</td>
+                            <td class="text-center"><span class="badge bg-warning text-dark">Waspada</span></td>
+                        </tr>
 
-                            <li class="list-group-item">
-                                <a href="/hukum" class="dropdown-item">Penegakan Hukum Narkotika</a>
-                            </li>
+                        <tr data-level="Siaga">
+                            <td>Rejotangan</td><td class="text-center">4</td>
+                            <td class="text-center"><span class="badge bg-success">Siaga</span></td>
+                        </tr>
+                        <tr data-level="Siaga">
+                            <td>Pakel</td><td class="text-center">2</td>
+                            <td class="text-center"><span class="badge bg-success">Siaga</span></td>
+                        </tr>
+                        <tr data-level="Siaga">
+                            <td>Bandung</td><td class="text-center">2</td>
+                            <td class="text-center"><span class="badge bg-success">Siaga</span></td>
+                        </tr>
+                        <tr data-level="Siaga">
+                            <td>Campurdarat</td><td class="text-center">2</td>
+                            <td class="text-center"><span class="badge bg-success">Siaga</span></td>
+                        </tr>
 
-                            <li class="list-group-item">
-                                <a href="/deteksidini" class="dropdown-item">Deteksi Dini & Tes Urine</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/peredaran" class="dropdown-item">Peredaran Gelap & Penyelundupan Narkotika</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/peranmasyarakat" class="dropdown-item">Peran Masyarakat & Lingkungan Sosial</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/pendidikan" class="dropdown-item">Pendidikan Anti-Narkoba di Sekolah & Kampus</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/pelayanan" class="dropdown-item">Pelayanan Pascarehabilitasi</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/dukungan" class="dropdown-item">Dukungan Keluarga & Lingkungan bagi Mantan Pecandu</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="/laporan">Laporan</a>
-                </li>
-
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="/contact">Kontak Kami</a>
-                </li>
-
-                <!-- SEARCH BAR -->
-                <li class="nav-item ms-3">
-                    <form class="d-flex" role="search">
-                        <div class="input-group">
-                            <input 
-                                class="form-control" 
-                                type="search" 
-                                placeholder="Cari..." 
-                                aria-label="Search">
-                            <button class="btn btn-light" type="submit">
-                                🔍
-                            </button>
-                        </div>
-                    </form>
-                </li>
-            </ul>
+                        <tr data-level="Aman">
+                            <td>Karangrejo</td><td class="text-center">1</td>
+                            <td class="text-center"><span class="badge bg-info text-dark">Aman</span></td>
+                        </tr>
+                        <tr data-level="Aman">
+                            <td>Besuki</td><td class="text-center">1</td>
+                            <td class="text-center"><span class="badge bg-info text-dark">Aman</span></td>
+                        </tr>
+                        <tr data-level="Aman">
+                            <td>Tanggunggunung</td><td class="text-center">1</td>
+                            <td class="text-center"><span class="badge bg-info text-dark">Aman</span></td>
+                        </tr>
+                        <tr data-level="Aman">
+                            <td>Gondang</td><td class="text-center">1</td>
+                            <td class="text-center"><span class="badge bg-info text-dark">Aman</span></td>
+                        </tr>
+                        <tr data-level="Aman">
+                            <td>Sendang</td><td class="text-center">0</td>
+                            <td class="text-center"><span class="badge bg-info text-dark">Aman</span></td>
+                        </tr>
+                        <tr data-level="Aman">
+                            <td>Kalidawir</td><td class="text-center">0</td>
+                            <td class="text-center"><span class="badge bg-info text-dark">Aman</span></td>
+                        </tr>
+                        <tr data-level="Aman">
+                            <td>Pucanglaban</td><td class="text-center">0</td>
+                            <td class="text-center"><span class="badge bg-info text-dark">Aman</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</nav>
+</div>
 
-<!-- Bootstrap JS -->
-<script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+{{-- SCRIPT FILTER TABEL --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.filter-btn');
+        const tableRows = document.querySelectorAll('#tabelKerawanan tbody tr');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                // 1. Ambil nilai filter dari tombol yang diklik
+                const filterValue = this.getAttribute('data-filter');
+
+                // 2. Update tampilan tombol (Active State)
+                buttons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // 3. Filter Baris Tabel
+                tableRows.forEach(row => {
+                    const rowLevel = row.getAttribute('data-level');
+
+                    // Jika filter 'all' ATAU level baris sama dengan filter, tampilkan
+                    if (filterValue === 'all' || rowLevel === filterValue) {
+                        row.style.display = ''; // Reset display (munculkan)
+                    } else {
+                        row.style.display = 'none'; // Sembunyikan
+                    }
+                });
+            });
+        });
+    });
 </script>
-</body>
-</html>
+
+{{-- SCRIPT MAP LEAFLET --}}
+<script>
+    // Koordinat pusat Tulungagung
+    const tulungagungCenter = [-8.0657, 111.9020];
+
+    const map = L.map('mapTulungagung').setView(tulungagungCenter, 11);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+    }).addTo(map);
+
+    // --- CUSTOM ICONS ---
+    const leafIcon = L.Icon.extend({
+        options: {
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        }
+    });
+
+    const redIcon = new leafIcon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png' });
+    const goldIcon = new leafIcon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png' }); 
+    const greenIcon = new leafIcon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png' });
+    const blueIcon = new leafIcon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png' });
+
+    // --- DATA MARKERS ---
+    const markers = [
+        // BAHAYA
+        { name: "Kedungwaru", coord: [-8.0538, 111.9168], color: "red", status: "Bahaya" },
+        { name: "Ngunut", coord: [-8.1026, 112.0075], color: "red", status: "Bahaya" },
+        { name: "Tulungagung", coord: [-8.0665, 111.9012], color: "red", status: "Bahaya" },
+
+        // WASPADA
+        { name: "Boyolangu", coord: [-8.1031, 111.8936], color: "gold", status: "Waspada" },
+        { name: "Ngantru", coord: [-8.0050, 111.9450], color: "gold", status: "Waspada" },
+        { name: "Sumbergempol", coord: [-8.0945, 111.9432], color: "gold", status: "Waspada" },
+        { name: "Kauman", coord: [-8.0265, 111.8552], color: "gold", status: "Waspada" },
+
+        // SIAGA
+        { name: "Rejotangan", coord: [-8.1170, 112.0675], color: "green", status: "Siaga" },
+        { name: "Pakel", coord: [-8.1547, 111.8268], color: "green", status: "Siaga" },
+        { name: "Bandung", coord: [-8.1718, 111.7825], color: "green", status: "Siaga" },
+        { name: "Campurdarat", coord: [-8.1628, 111.8628], color: "green", status: "Siaga" },
+
+        // AMAN
+        { name: "Karangrejo", coord: [-7.9911, 111.8975], color: "blue", status: "Aman" },
+        { name: "Besuki", coord: [-8.2222, 111.7789], color: "blue", status: "Aman" },
+        { name: "Tanggunggunung", coord: [-8.2430, 111.8845], color: "blue", status: "Aman" },
+        { name: "Gondang", coord: [-8.0528, 111.8285], color: "blue", status: "Aman" },
+        { name: "Sendang", coord: [-7.9660, 111.8830], color: "blue", status: "Aman" },
+        { name: "Kalidawir", coord: [-8.1799, 111.9721], color: "blue", status: "Aman" },
+        { name: "Pagerwojo", coord: [-7.9625, 111.7858], color: "blue", status: "Aman" },
+        { name: "Pucanglaban", coord: [-8.2975, 111.9880], color: "blue", status: "Aman" }
+    ];
+
+    markers.forEach(m => {
+        let chosenIcon;
+        if (m.color === 'red') chosenIcon = redIcon;
+        else if (m.color === 'gold') chosenIcon = goldIcon;
+        else if (m.color === 'green') chosenIcon = greenIcon;
+        else chosenIcon = blueIcon;
+
+        L.marker(m.coord, { icon: chosenIcon })
+            .addTo(map)
+            .bindPopup(`<b>${m.name}</b><br>Status: ${m.status}`);
+    });
+</script>
+
+@include('layouts.Frontend.footer')
+
+@endsection

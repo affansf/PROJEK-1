@@ -6,180 +6,105 @@
     <title>Laporan</title>
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Bootstrap CSS -->
-    <link 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
-        rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; overflow-x: hidden; }
+    </style>
 </head>
-<body>
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #00008B;">
-    <div class="container">
+<body class="bg-light"> 
+    
+    @include('layouts.Frontend.navbar') 
 
-        <!-- LOGO -->
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="img/tuberna.png" alt="Logo" width="135" height="40" class="me-2">
-        </a>
+    <div class="container" style="margin-top: 100px;">
+        
+        <!-- Pesan Sukses -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-        <!-- Button Hamburger -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <!-- Pesan Error Validasi -->
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-        <!-- Menu -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="/">Beranda</a>
-                </li>
-
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="/desabersinar">Desa Bersinar</a>
-                </li>
-
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="/bukusaku">Buku saku</a>
-                </li>
-
-                <li class="nav-item mx-2">
-                    <a class="nav-link"
-                    href="#submenuArtikel"
-                    data-bs-toggle="collapse"
-                    role="button"
-                    aria-expanded="false">
-                        Artikel & Berita ▼
-                    </a>
-
-                        <!-- Submenu (muncul tepat di bawahnya) -->
-                        <div id="submenuArtikel" class="collapse submenu-artikel">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a href="/narkoba" class="dropdown-item">Narkoba</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/p4gn" class="dropdown-item">P4GN</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/rehabilitasi" class="dropdown-item">Rehabilitasi & Pemulihan</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/hukum" class="dropdown-item">Penegakan Hukum Narkotika</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/deteksidini" class="dropdown-item">Deteksi Dini & Tes Urine</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/peredaran" class="dropdown-item">Peredaran Gelap & Penyelundupan Narkotika</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/peranmasyarakat" class="dropdown-item">Peran Masyarakat & Lingkungan Sosial</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/pendidikan" class="dropdown-item">Pendidikan Anti-Narkoba di Sekolah & Kampus</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/pelayanan" class="dropdown-item">Pelayanan Pascarehabilitasi</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="/dukungan" class="dropdown-item">Dukungan Keluarga & Lingkungan bagi Mantan Pecandu</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item mx-2">
-                    <a class="nav-link {{ request()->is('laporan') ? 'fw-bold text-white' : 'text-light' }}"
-                       href="/laporan">Laporan</a>
-                </li>
-
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="/contact">Kontak Kami</a>
-                </li>
-
-                <!-- SEARCH BAR -->
-                <li class="nav-item ms-3">
-                    <form class="d-flex" role="search">
-                        <div class="input-group">
-                            <input 
-                                class="form-control" 
-                                type="search" 
-                                placeholder="Cari..." 
-                                aria-label="Search">
-                            <button class="btn btn-light" type="submit">
-                                🔍
-                            </button>
-                        </div>
-                    </form>
-                </li>
-
-            </ul>
-        </div>
+        @yield('content')
     </div>
-</nav>
 
-<!-- ===== FORM LAPORAN ===== -->
-<div class="container mt-3 mb-3">
+    <div class="container mb-5" style="margin-top: 80px;">
+        <div class="card p-4 shadow-lg" style="background: linear-gradient(180deg, #1976d2); color: white; border-radius: 15px;">
+            <h3 class="mb-3 fw-bold">Form Laporan Warga (Anonim tersedia)</h3>
+            <p>Gunakan form ini untuk melaporkan dugaan penyalahgunaan atau peredaran. Data pribadi tidak wajib.</p>
 
-    <div class="card p-4 shadow-lg" style="background: linear-gradient(180deg, #1a80d7, #0b60ad); color: white; border-radius: 15px;">
-        <h3 class="mb-3 fw-bold">Form Laporan Warga (Anonim tersedia)</h3>
-        <p>Gunakan form ini untuk melaporkan dugaan penyalahgunaan atau peredaran. Data pribadi tidak wajib.</p>
+            <form action="/laporan/kirim" method="POST" enctype="multipart/form-data">
+                <!-- @csrf WAJIB ADA DI SINI -->
+                @csrf
 
-        <form action="/laporan/kirim" method="POST">
-            @csrf
+                <label class="mt-3 fw-bold">Nama pengguna</label>
+                <!-- Hapus tag </select> yang salah di sini -->
+                <input type="text" class="form-control" name="nama_pengguna" placeholder="Masukkan nama lengkap anda" required>
 
-            <!-- Jenis Laporan -->
-            <label class="mt-3 fw-bold">Jenis Laporan</label>
-            <select class="form-select" name="jenis_laporan" required>
-                <option value="Pengedaran">Pengedaran</option>
-                <option value="Penyalahgunaan">Penyalahgunaan</option>
-                <option value="Lainnya">Lainnya</option>
-            </select>
+                <label class="mt-3 fw-bold">Nomor Handphone</label>
+                <!-- Hapus tag </select> yang salah di sini -->
+                <input type="text" class="form-control" name="nomor_handphone" placeholder="Masukkan nomor handphone anda" required>
 
-            <!-- Desa / Lokasi -->
-            <label class="mt-3 fw-bold">Desa / Lokasi</label>
-            <input type="text" class="form-control" name="lokasi" placeholder="Nama desa atau lokasi kejadian" required>
+                <label class="mt-3 fw-bold">Alamat Rumah</label>
+                <!-- Hapus tag </select> yang salah di sini -->
+                <input type="text" class="form-control" name="alamat_rumah" placeholder="Masukkan alamat rumah anda" required>
+        
+                <label class="mt-3 fw-bold">Jenis Laporan</label>
+                <select class="form-select" name="jenis_laporan" required>
+                    <option value="Pengedaran">Pengedaran</option>
+                    <option value="Penyalahgunaan">Penyalahgunaan</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
 
-            <!-- Rincian -->
-            <label class="mt-3 fw-bold">Rincian</label>
-            <textarea class="form-control" name="rincian" rows="5" placeholder="Tuliskan detail yang Anda ketahui..." required></textarea>
+                <label class="mt-3 fw-bold">Desa / Lokasi</label>
+                <input type="text" class="form-control" name="lokasi" placeholder="Nama desa atau lokasi kejadian" required>
 
-            <!-- Kirim sebagai anonim -->
-            <div class="form-check mt-3">
-                <input class="form-check-input" type="checkbox" name="anonim" checked>
-                <label class="form-check-label">Kirim sebagai anonim</label>
+                <label class="mt-3 fw-bold">Rincian</label>
+                <textarea class="form-control" name="rincian" rows="5" placeholder="Tuliskan detail yang Anda ketahui..." required></textarea>
+
+                <label class="mt-3 fw-bold">Bukti Foto / Foto TKP</label>
+                <input type="file" class="form-control" name="foto_bukti" accept="image/*">
+                <small class="text-light" style="opacity: 0.8;">Format: JPG, PNG, JPEG. Opsional.</small>
+
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" name="anonim" checked>
+                    <label class="form-check-label">Kirim sebagai anonim</label>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-light px-4 fw-bold" style="color: #1976d2;">Kirim Laporan</button>
+                    <button type="reset" class="btn btn-secondary px-4">Reset</button>
+                </div>
+            </form>
+
+            <div class="mt-4 p-3 rounded" style="background-color: rgba(255,255,255,0.15);">
+                <h6 class="fw-bold">Catatan Keamanan</h6>
+                <ul>
+                    <li>Jangan meng-upload data pribadi pihak lain tanpa izin.</li>
+                    <li>Laporan anonim tetap diverifikasi oleh admin sebelum tindakan.</li>
+                    <li>Pastikan foto TKP aman untuk diambil.</li>
+                </ul>
             </div>
-
-            <!-- Tombol -->
-            <div class="mt-4">
-                <button type="submit" class="btn btn-light px-4">Kirim Laporan</button>
-                <button type="reset" class="btn btn-secondary px-4">Reset</button>
-            </div>
-        </form>
-
-        <!-- Catatan Keamanan -->
-        <div class="mt-4 p-3 rounded" style="background-color: rgba(255,255,255,0.15);">
-            <h6 class="fw-bold">Catatan Keamanan</h6>
-            <ul>
-                <li>Jangan meng-upload data pribadi pihak lain tanpa izin.</li>
-                <li>Laporan anonim tetap diverifikasi oleh admin sebelum tindakan.</li>
-            </ul>
         </div>
     </div>
 
-<!-- Bootstrap JS -->
-<script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
+    @include('layouts.Frontend.footer')
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

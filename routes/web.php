@@ -1,27 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NarkobaController;
-use App\Http\Controllers\P4gnController;
-use App\Http\Controllers\RehabilitasiController;
-use App\Http\Controllers\HukumController;
-use App\Http\Controllers\DeteksiDiniController;
-use App\Http\Controllers\PeredaranController;
-use App\Http\Controllers\PeranMasyarakatController;
-use App\Http\Controllers\PendidikanController;
-use App\Http\Controllers\PelayananController;
-use App\Http\Controllers\DukunganController;
+use App\Http\Controllers\LaporanController;
 
-Route::get('/narkoba', [NarkobaController::class, 'index']);
-Route::get('/p4gn', [P4gnController::class, 'index']);
-Route::get('/rehabilitasi', [RehabilitasiController::class, 'index']);
-Route::get('/hukum', [HukumController::class, 'index']);
-Route::get('/deteksidini', [DeteksiDiniController::class, 'index']);
-Route::get('/peredaran', [PeredaranController::class, 'index']);
-Route::get('/peranmasyarakat', [PeranMasyarakatController::class, 'index']);
-Route::get('/peredaran', [PendidikanController::class, 'index']);
-Route::get('/pelayanan', [PelayananController::class, 'index']);
-Route::get('/dukungan', [DukunganController::class, 'index']);
+Route::post('/laporan/kirim', [LaporanController::class, 'store'])->name('laporan.kirim');
+
 
 Route::get('/', function () {
     return view('home');
@@ -29,10 +12,6 @@ Route::get('/', function () {
 
 Route::get('/desabersinar', function () {
     return view('desabersinar');
-});
-
-Route::get('/artikelberita', function () {
-    return view('artikelberita');
 });
 
 Route::get('/laporan', function () {
@@ -43,46 +22,48 @@ Route::get('/bukusaku', function () {
     return view('bukusaku');
 });
 
-Route::get('/narkoba', function () {
-    return view('narkoba');
-});
-
 Route::get('/contact', function () {
     return view('contact');
 });
 
+// Route untuk Menu Dropdown 'Artikel & Berita' //
+
+Route::get('/narkoba', function () {
+    return view('layouts.narkoba');
+});
+
 Route::get('/p4gn', function () {
-    return view('p4gn');
+    return view('layouts.p4gn');
 });
 
 Route::get('/rehabilitasi', function () {
-    return view('rehabilitasi');
+    return view('layouts.rehabilitasi');
 });
 
 Route::get('/hukum', function () {
-    return view('hukum');
+    return view('layouts.hukum');
 });
 
 Route::get('/deteksidini', function () {
-    return view('deteksidini');
+    return view('layouts.deteksidini');
 });
 
 Route::get('/peredaran', function () {
-    return view('peredaran');
+    return view('layouts.peredaran');
 });
 
 Route::get('/peranmasyarakat', function () {
-    return view('peranmasyarakat');
+    return view('layouts.peranmasyarakat');
 });
 
 Route::get('/pendidikan', function () {
-    return view('pendidikan');
+    return view('layouts.pendidikan');
 });
 
 Route::get('/pelayanan', function () {
-    return view('pelayanan');
+    return view('layouts.pelayanan');
 });
 
 Route::get('/dukungan', function () {
-    return view('dukungan');
+    return view('layouts.dukungan');
 });

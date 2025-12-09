@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Narkobas\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class NarkobasTable
@@ -13,7 +14,18 @@ class NarkobasTable
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('judul')
+                    ->searchable(),
+                TextColumn::make('gambar')
+                    ->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

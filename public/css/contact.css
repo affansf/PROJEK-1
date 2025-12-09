@@ -1,0 +1,72 @@
+/* Warna Utama (Bisa disesuaikan dengan warna BNN: Biru Tua) */
+.bg-primary {
+    background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%) !important;
+}
+
+.text-primary {
+    color: #0d47a1 !important;
+}
+
+.btn-primary {
+    background-color: #0d47a1;
+    border-color: #0d47a1;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1565c0;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(13, 71, 161, 0.4);
+}
+
+/* Style Input Form */
+.form-control:focus {
+    box-shadow: none;
+    border: 1px solid #1976d2;
+    background-color: #fff !important;
+}
+
+/* Icon Box di Kolom Kiri */
+.icon-box {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+/* Social Media Icons */
+.social-icon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    color: #0d47a1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background: #ffc107; /* Warna Kuning Emas */
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* Elemen Dekorasi Aesthetic */
+.circle-decoration {
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    pointer-events: none;
+}
+

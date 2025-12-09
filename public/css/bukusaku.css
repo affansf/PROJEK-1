@@ -1,0 +1,33 @@
+/* File: public/css/bukusaku.css */
+
+/* Styling Tombol Menu */
+.list-group-item {
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent; /* Garis vertikal transparan default */
+}
+
+/* Efek saat tombol Aktif (Biru) */
+.list-group-item.active {
+    background-color: #3b82f6; 
+    border-color: #3b82f6;
+    color: #fff !important;
+    border-left: 3px solid #1d4ed8; /* Garis vertikal lebih gelap saat aktif */
+}
+
+/* Warna Ikon saat aktif */
+.list-group-item.active .icon-doc {
+    color: #fff !important;
+}
+
+/* Efek Hover (Saat mouse diarahkan) */
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transform: translateX(5px); /* Efek gerak sedikit ke kanan */
+}
+
+/* Mencegah konflik hover saat tombol sedang aktif */
+.list-group-item.active:hover {
+    background-color: #2563eb; 
+    transform: none;
+}

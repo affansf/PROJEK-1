@@ -1,0 +1,64 @@
+.filter-box {
+    width: 130px;
+    height: 42px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* TOMBOL "Tampilkan Semua" lebih panjang */
+.filter-long {
+    width: 170px !important;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 576px) {
+    .filter-box {
+        width: 120px;
+        height: 40px;
+        font-size: 13px;
+    }
+    .filter-long {
+        width: 160px !important;
+    }
+}
+
+.table-responsive {
+    overflow-y: auto;     /* tetap scroll vertikal */
+    overflow-x: hidden;   /* cegah scroll horizontal */
+}
+
+#tabelKerawanan {
+    width: 100%;          /* kunci lebar tabel */
+    table-layout: fixed;  /* lebar kolom stabil */
+}
+
+.table-fixed-height {
+    min-height: 480px; /* boleh diubah sedikit */
+}
+
+/* Mencegah tabel bergeser ke kiri/kanan */
+.table-responsive {
+    overflow-y: auto;     /* scroll vertikal tetap */
+    overflow-x: hidden;   /* cegah scroll horizontal */
+}
+
+/* Kunci lebar tabel agar stabil */
+#tabelKerawanan {
+    width: 100%;
+    table-layout: fixed;   /* kolom tidak berubah-ubah */
+}
+
+/* Kolom teks tetap rapi */
+#tabelKerawanan th,
+#tabelKerawanan td {
+    white-space: nowrap;
+}
+
+.btn-fixed {
+        width: 120px; /* Atur lebar sesuai keinginan, 120px cukup untuk kata 'Waspada' */
+        text-align: center;
+    }

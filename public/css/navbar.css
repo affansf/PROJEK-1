@@ -1,0 +1,79 @@
+.submenu-artikel {
+    position: absolute;
+    top: 100%;        /* Tepat di bawah menu */
+    left: 100;          /* Rata kiri */
+    background: white;
+    border-radius: 8px;
+    font-size: 14px;
+    min-width: 180px;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Mengecilkan tinggi navbar */
+.navbar {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
+/* Mengecilkan tinggi item menu */
+.navbar-nav .nav-link {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    font-size: 13px; /* opsional */
+}
+
+/* Mengecilkan logo */
+.navbar-brand img {
+    height: 32px !important;  /* kecilkan sesuai kebutuhan */
+    width: auto !important;
+}
+
+/* Search bar lebih kecil */
+.navbar .form-control {
+    height: 32px !important;
+    padding: 4px 10px !important;
+    font-size: 14px;
+}
+
+.navbar .btn {
+    padding: 4px 10px !important;
+    height: 32px !important;
+    font-size: 14px;
+}
+
+/* Mengatasi tampilan di perangkat seluler (mobile) */
+    @media (max-width: 991.98px) {
+        .submenu-artikel {
+            position: relative; /* Pastikan collapse bekerja dengan baik di mobile */
+            width: 100%;
+        }
+    }
+
+    /* Styling tambahan untuk item dropdown */
+    .submenu-artikel .list-group-item {
+        padding: 0; /* Hapus padding default list-group-item */
+        border: none;
+        background-color: transparent; /* Pastikan latar belakang transparan */
+    }
+
+    .submenu-artikel .dropdown-item {
+        /* Warna teks default untuk semua item adalah redup/muted */
+        color: var(--bs-gray-600) !important; 
+        font-weight: normal; 
+        padding: 0.5rem 1rem; /* Berikan padding yang layak */
+        display: block;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    /* Efek Hover: Teks menjadi Biru Primer, dan latar belakang sedikit berubah */
+    .submenu-artikel .dropdown-item:hover, 
+    .submenu-artikel .dropdown-item:focus {
+        background-color: rgba(0, 0, 139, 0.05); /* Sedikit latar belakang biru gelap transparan */
+        color: var(--bs-primary) !important; /* Teks menjadi warna biru utama */
+    }
+
+    /* Pastikan tautan aktif di navbar utama (Artikel & Berita) tetap berwarna putih */
+    .navbar-nav .nav-link.fw-bold.text-white {
+        font-weight: bold;
+    }

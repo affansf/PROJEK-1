@@ -1,0 +1,70 @@
+.custom-footer {
+        background-color: #134784; /* Warna Biru Utama */
+        color: #ffffff;
+        font-size: 14px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+
+    .custom-footer a {
+        color: #ffffff;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .custom-footer a:hover {
+        color: #d1d1d1;
+        text-decoration: underline;
+    }
+
+    .footer-logo-text {
+        font-weight: bold;
+        font-size: 1.2rem;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        line-height: 1.2;
+    }
+
+    .footer-title {
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        /* color: #a8bxc9; */
+    }
+
+    .footer-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .footer-list li {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .footer-list li i {
+        margin-right: 10px;
+        margin-top: 4px; /* Align icon dengan text */
+        width: 20px;
+        text-align: center;
+    }
+
+    /* Kotak Kontak yang lebih gelap */
+    .contact-box {
+        padding: 15px;
+        margin-top: 20px;
+        margin-left: -15px;
+    }
+
+    .social-icons a {
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    
+    .copyright-text {
+        font-size: 12px;
+        opacity: 0.8;
+        margin-top: 20px;
+    }
