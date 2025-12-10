@@ -1,16 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MateriBukuSakuController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuSakuController;
-
+use Illuminate\Support\Facades\Storage;
+use App\Models\MateriBukuSaku;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
 
-Route::get('/buku/{id}', [BukuSakuController::class, 'show'])->name('buku.show');
 Route::get('/bukusaku', [BukuSakuController::class, 'index'])->name('bukusaku.index');
 
 Route::get('/desabersinar', function () {
@@ -67,3 +68,19 @@ Route::get('/dukungan', function () {
     return view('layouts.dukungan');
 });
 
+Route::get('/bukusaku/file/{materi}', function (MateriBukuSaku $materi) {
+    $disk = Storage::disk('public');
+    $path = $materi->file_path;
+
+    if (! $path || ! $disk->exists($path)) {
+        abort(404);
+    }
+
+    $fullPath = $disk->path($path);
+
+    // Tampilkan PDF di browser (inline)
+    return response()->file($fullPath, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="'.basename($fullPath).'"',
+    ]);
+})->name('bukusaku.file');

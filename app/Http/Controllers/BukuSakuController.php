@@ -2,32 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-
+use App\Models\MateriBukuSaku;
 class BukuSakuController extends Controller
 {
     public function index()
     {
-        $documents = Document::orderBy('category')->get();
-        return view('bukusaku', compact('documents'));
-    }
+        $materis = MateriBukuSaku::orderBy('urutan', 'asc')
+                                 ->orderBy('id', 'asc')
+                                 ->get();
 
-    // Tambahkan method untuk menampilkan PDF
-    public function show($id)
-    {
-        $document = Document::findOrFail($id);
+        // Pisahkan materi berdasarkan kategori
+        $bukuSaku = $materis->filter(fn ($m) => $m->kategori === 'Buku Saku');
+        $dasarHukum = $materis->filter(fn ($m) => $m->kategori === 'Dasar Hukum & Regulasi');
+        $lainnya = $materis->filter(fn ($m) => $m->kategori === 'Lainnya');
+        
+        // Pilih file pertama yang ada sebagai default untuk viewer
+        $defaultFile = $materis->first() ? $materis->first()->file_path : null;
 
-        // Path file PDF
-        $filePath = 'public/' . $document->file;
-
-        // Cek apakah file ada
-        if (!Storage::exists($filePath)) {
-            abort(404, "File tidak ditemukan di storage");
-        }
-
-        // Buka file sebagai response agar bisa ditampilkan di <embed>
-        return response()->file(storage_path('app/' . $filePath));
+        return view('bukusaku', compact('bukuSaku', 'dasarHukum', 'lainnya', 'defaultFile'));
     }
 }
