@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Laporans\Schemas;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
 
 class LaporanForm
@@ -28,8 +30,26 @@ class LaporanForm
                 Textarea::make('rincian')
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('foto_bukti')
-                    ->default(null),
+                FileUpload::make('foto_bukti')
+                    ->disk('public') // Pastikan disk public
+                    ->directory('bukti-laporan')
+                    ->image()
+                    ->imageEditor()
+                    ->downloadable()
+                    ->openable()
+                    ->columnSpanFull()
+                    ->label('Bukti Foto TKP'),
+
+                // BAGIAN PENTING: Untuk Status Tindak Lanjut
+                Select::make('status')
+                    ->options([
+                        'Menunggu' => 'Menunggu',
+                        'Sedang Diproses' => 'Sedang Diproses',
+                        'Selesai' => 'Selesai / Ditindaklanjuti',
+                    ])
+                    ->default('Menunggu')
+                    ->required()
+                    ->label('Status Penanganan'),
                 Toggle::make('anonim')
                     ->required(),
             ]);

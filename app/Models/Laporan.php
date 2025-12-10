@@ -20,6 +20,7 @@ class Laporan extends Model
     'rincian',
     'foto_bukti',
     'anonim',
+    'status',   
 ];
 protected $casts = [
         'anonim' => 'boolean',

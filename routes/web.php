@@ -2,13 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BukuSakuController;
 
-Route::post('/laporan/kirim', [LaporanController::class, 'store'])->name('laporan.kirim');
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
+
+Route::get('/buku/{id}', [BukuSakuController::class, 'show'])->name('buku.show');
+Route::get('/bukusaku', [BukuSakuController::class, 'index'])->name('bukusaku.index');
 
 Route::get('/desabersinar', function () {
     return view('desabersinar');
@@ -16,10 +19,6 @@ Route::get('/desabersinar', function () {
 
 Route::get('/laporan', function () {
     return view('laporan');
-});
-
-Route::get('/bukusaku', function () {
-    return view('bukusaku');
 });
 
 Route::get('/contact', function () {
@@ -67,3 +66,4 @@ Route::get('/pelayanan', function () {
 Route::get('/dukungan', function () {
     return view('layouts.dukungan');
 });
+

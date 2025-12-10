@@ -48,7 +48,7 @@
             <h3 class="mb-3 fw-bold">Form Laporan Warga (Anonim tersedia)</h3>
             <p>Gunakan form ini untuk melaporkan dugaan penyalahgunaan atau peredaran. Data pribadi tidak wajib.</p>
 
-            <form action="/laporan/kirim" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data">
                 <!-- @csrf WAJIB ADA DI SINI -->
                 @csrf
 

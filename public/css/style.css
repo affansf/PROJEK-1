@@ -200,6 +200,7 @@ body {
 .ds-description {
     font-size: 1.1rem;
     line-height: 1.6;
+    color: #ffffff !important; 
 }
 
 /* Styling untuk kolom gambar */

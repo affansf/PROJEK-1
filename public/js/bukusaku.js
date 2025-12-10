@@ -69,3 +69,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+document.querySelectorAll('.btn-pdf').forEach(button => {
+    button.addEventListener('click', function () {
+        document.getElementById('pdf-viewer').src = this.dataset.url;
+        document.getElementById('btn-download').href = this.dataset.url;
+
+        document.querySelectorAll('.btn-pdf').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
