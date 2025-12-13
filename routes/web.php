@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MateriBukuSakuController;
+use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuSakuController;
@@ -84,3 +85,19 @@ Route::get('/bukusaku/file/{materi}', function (MateriBukuSaku $materi) {
         'Content-Disposition' => 'inline; filename="'.basename($fullPath).'"',
     ]);
 })->name('bukusaku.file');
+
+Route::controller(ArtikelController::class)->group(function () {
+    Route::get('/narkoba', 'narkoba')->name('artikel.narkoba');
+    Route::get('/p4gn', 'p4gn')->name('artikel.p4gn');
+    Route::get('/rehabilitasi', 'rehabilitasi')->name('artikel.rehabilitasi');
+    Route::get('/hukum', 'hukum')->name('artikel.hukum');
+    Route::get('/deteksidini', 'deteksidini')->name('artikel.deteksidini');
+    Route::get('/peredaran', 'peredaran')->name('artikel.peredaran');
+    Route::get('/peranmasyarakat', 'peranmasyarakat')->name('artikel.peranmasyarakat');
+    Route::get('/pendidikan', 'pendidikan')->name('artikel.pendidikan');
+    Route::get('/pelayanan', 'pelayanan')->name('artikel.pelayanan');
+    Route::get('/dukungan', 'dukungan')->name('artikel.dukungan');
+    
+    // Route untuk membaca detail artikel
+    Route::get('/artikel/baca/{slug}', 'show')->name('artikel.show');
+});

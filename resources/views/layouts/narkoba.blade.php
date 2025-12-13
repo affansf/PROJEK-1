@@ -1,79 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Narkoba</title>
+@extends('layouts.app')
 
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-    <!-- Bootstrap CSS -->
-    <link 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="bg-light"> 
-    
-@include('layouts.Frontend.navbar') 
-
+@section('content')
+{{-- Bagian Hero / Judul Halaman --}}
 <section class="hero-training">
-        <div class="container">
-            <h1 class="mb-4 fw-bold">Mari Cari Tahu! Baca Informasi Terkini untuk Hidup Bersinar</h1>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10">
-                    <div class="d-flex gap-2">
-                        <div class="search-container flex-grow-1">
-                            <i class="fas fa-search search-icon"></i> 
-                            <input type="text" class="form-control search-input w-100" 
-                                placeholder="Penelusuran..." 
-                                aria-label="Search">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                {{-- Judul Kategori --}}
+                <h1 class="mb-3 fw-bold text-white">Informasi & Berita: Narkoba</h1>
+                <p class="text-white-50 mb-4">Temukan artikel dan berita terbaru seputar bahaya dan penanggulangan narkoba.</p>
+                
+                {{-- Form Pencarian --}}
+                <form action="{{ route('artikel.narkoba') }}" method="GET" class="d-flex justify-content-center">
+                    <div class="input-group" style="max-width: 500px;">
+                        <input type="text" name="search" class="form-control" placeholder="Cari artikel narkoba..." value="{{ request('search') }}">
+                        <button class="btn btn-light text-primary fw-bold" type="submit">Cari</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- Daftar Artikel --}}
+<div class="container mt-5 mb-5">
+    @if(isset($articles) && $articles->count() > 0)
+        <div class="row g-4">
+            @foreach($articles as $item)
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+                <div class="card shadow-sm border-0 w-100 h-100 transition-hover">
+                    {{-- Gambar Artikel --}}
+                    <div style="height: 200px; overflow: hidden; background-color: #f0f0f0;">
+                        @if($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" 
+                                 class="card-img-top w-100 h-100" 
+                                 alt="{{ $item->title }}" 
+                                 style="object-fit: cover;">
+                        @else
+                            {{-- Placeholder jika tidak ada gambar --}}
+                            <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                                <i class="far fa-image fa-3x"></i>
+                            </div>
+                        @endif
+                    </div>
+                    
+                    <div class="card-body pt-3 d-flex flex-column">
+                        {{-- Kategori Badge (Warna Primary/Biru untuk Narkoba) --}}
+                        <div class="mb-2">
+                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">
+                                Narkoba
+                            </span>
+                        </div>
+
+                        {{-- Judul --}}
+                        <h5 class="card-title fw-bold fs-6 mb-2">
+                            <a href="{{ route('artikel.show', $item->slug) }}" class="text-decoration-none text-dark stretched-link">
+                                {{ Str::limit($item->title, 50) }}
+                            </a>
+                        </h5>
+                        
+                        {{-- Sub Judul / Cuplikan --}}
+                        <p class="card-text text-muted small mb-3 flex-grow-1">
+                            {{ $item->subtitle ? Str::limit($item->subtitle, 60) : Str::limit(strip_tags($item->content), 60) }}
+                        </p>
+                        
+                        {{-- Footer Card --}}
+                        <div class="d-flex justify-content-between align-items-center mt-auto border-top pt-3">
+                            <small class="text-muted">
+                                <i class="far fa-calendar-alt me-1"></i> 
+                                {{ $item->created_at->format('d M Y') }}
+                            </small>
+                            <small class="text-primary fw-bold">Baca <i class="fas fa-arrow-right ms-1"></i></small>
                         </div>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
-    </section>
-    
-    <div class="container mt-4">
-        @yield('content')
-    </div>
 
-<section class="latest-training mb-5">
-    <div id="trainingCarousel" class="carousel slide" data-bs-ride="false" data-bs-interval="false">
-        <div class="carousel-inner">
+        {{-- Pagination --}}
+        <div class="mt-5 d-flex justify-content-center">
+            {{ $articles->links() }}
+        </div>
+    @else
+        {{-- Tampilan Jika Data Kosong --}}
+        <div class="text-center py-5">
+            <h4 class="mt-3 text-muted">Belum ada artikel ditemukan</h4>
+        </div>
+    @endif
+</div>
 
-            <div class="carousel-item active">
-                <div class="row flex-nowrap g-3" style="overflow-x: auto;">
-                    
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
-                        <div class="card shadow-sm border-0 w-100">
-                            <img src="img/n1.png" class="card-img-top p-2">
-                            <div class="card-body pt-0">
-                                <h5 class="card-title fw-bold fs-6">Pengertian Narkoba Dan Bahaya Narkoba Bagi Kesehatan</h5>
-                                <p class="card-text text-muted small mb-1">BNNK Tulungagung</p>
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="text-warning me-1">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </span>
-                                </div>
-                                <p class="card-text text-muted small mb-3">38 peserta</p>
-                                <a href="#" class="btn btn-success w-100 fw-bold">Lihat</a>
-                            </div>
-                        </div>
-                    </div>
-            </section>
-
-            @include('layouts.Frontend.footer')
-
-<!-- Bootstrap JS -->
-<script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
-</body>
-</html>
+<style>
+    .transition-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .transition-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+</style>
+@endsection

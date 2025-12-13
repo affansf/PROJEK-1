@@ -1,120 +1,100 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; // Sesuaikan namespace jika perlu
 
 use App\Http\Controllers\Controller;
+use App\Models\Artikel; // Import Model
 use Illuminate\Http\Request;
 
 class ArtikelController extends Controller
 {
     /**
-     * Menampilkan daftar semua artikel berita (jika diperlukan).
-     * Route: /artikel/artikelberita
+     * Helper function untuk mengambil artikel per kategori
      */
-    public function artikelBerita()
+    private function getArticlesByCategory($category)
     {
-        // Logika untuk mengambil data daftar artikel dari database
-        // Misalnya: $articles = Article::paginate(10);
-        return view('layouts.Artikel_Berita.artikelberita');
+        // Mengambil artikel terbaru berdasarkan kategori, 6 per halaman
+        return Artikel::where('category', $category)->latest()->paginate(6);
     }
 
-    /**
-     * Menampilkan artikel tentang Deteksi Dini & Tes Urine.
-     * Route: /artikel/deteksidini
-     */
-    public function deteksiDini()
-    {
-        // Logika untuk mengambil data artikel "Deteksi Dini"
-        return view('layouts.Artikel_Berita.deteksidini');
-    }
-
-    /**
-     * Menampilkan artikel tentang Dukungan Keluarga & Lingkungan.
-     * Route: /artikel/dukungan
-     */
-    public function dukungan()
-    {
-        // Logika untuk mengambil data artikel "Dukungan"
-        return view('Frontend.Artikel_Berita.dukungan');
-    }
-
-    /**
-     * Menampilkan artikel tentang Penegakan Hukum Narkotika.
-     * Route: /artikel/hukum
-     */
-    public function hukum()
-    {
-        // Logika untuk mengambil data artikel "Hukum"
-        return view('Layouts.Artikel_Berita.hukum');
-    }
-
-    /**
-     * Menampilkan artikel tentang Narkoba.
-     * Route: /artikel/narkoba
-     */
     public function narkoba()
     {
-        // Logika untuk mengambil data artikel "Narkoba"
-        return view('layouts.Artikel_Berita.narkoba');
+        $articles = $this->getArticlesByCategory('narkoba');
+        $title = 'Narkoba';
+        // Kita gunakan view yang sama (reusable) atau view spesifik
+        return view('layouts.narkoba', compact('articles', 'title'));
     }
 
-    /**
-     * Menampilkan artikel tentang P4GN.
-     * Route: /artikel/p4gn
-     */
     public function p4gn()
     {
-        // Logika untuk mengambil data artikel "P4GN"
-        return view('layouts.Artikel_Berita.p4gn');
+        $articles = $this->getArticlesByCategory('p4gn');
+        $title = 'P4GN';
+        return view('layouts.p4gn', compact('articles', 'title'));
     }
+    
+    // ... Lakukan hal yang sama untuk fungsi lainnya ...
 
-    /**
-     * Menampilkan artikel tentang Pelayanan Pascarehabilitasi.
-     * Route: /artikel/pelayanan
-     */
-    public function pelayanan()
-    {
-        // Logika untuk mengambil data artikel "Pelayanan"
-        return view('layouts.Artikel_Berita.pelayanan');
-    }
-
-    /**
-     * Menampilkan artikel tentang Pendidikan Anti-Narkoba di Sekolah & Kampus.
-     * Route: /artikel/pendidikan
-     */
-    public function pendidikan()
-    {
-        // Logika untuk mengambil data artikel "Pendidikan"
-        return view('layouts.Artikel_Berita.pendidikan');
-    }
-
-    /**
-     * Menampilkan artikel tentang Peran Masyarakat & Lingkungan Sosial.
-     * Route: /artikel/peranmasyarakat
-     */
-    public function peranMasyarakat()
-    {
-        // Logika untuk mengambil data artikel "Peran Masyarakat"
-        return view('layouts.Artikel_Berita.peranmasyarakat');
-    }
-
-    /**
-     * Menampilkan artikel tentang Peredaran Gelap & Penyelundupan Narkotika.
-     * Route: /artikel/peredaran
-     */
-    public function peredaran()
-    {
-        // Logika untuk mengambil data artikel "Peredaran"
-        return view('layouts.Artikel_Berita.peredaran');
-    }
-
-    /**
-     * Menampilkan artikel tentang Rehabilitasi & Pemulihan.
-     * Route: /artikel/rehabilitasi
-     */
     public function rehabilitasi()
     {
-        // Logika untuk mengambil data artikel "Rehabilitasi"
-        return view('layouts.Artikel_Berita.rehabilitasi');
+        $articles = $this->getArticlesByCategory('rehabilitasi');
+        return view('layouts.rehabilitasi', compact('articles'));
+    }
+
+    public function hukum()
+    {
+        $articles = $this->getArticlesByCategory('hukum');
+        return view('layouts.hukum', compact('articles'));
+    }
+
+    public function deteksidini()
+    {
+        $articles = $this->getArticlesByCategory('deteksidini');
+        return view('layouts.deteksidini', compact('articles'));
+    }
+
+    public function peredaran()
+    {
+        $articles = $this->getArticlesByCategory('peredaran');
+        return view('layouts.peredaran', compact('articles'));
+    }
+
+    public function peranmasyarakat()
+    {
+        $articles = $this->getArticlesByCategory('peranmasyarakat');
+        return view('layouts.peranmasyarakat', compact('articles'));
+    }
+
+    public function pendidikan()
+    {
+        $articles = $this->getArticlesByCategory('pendidikan');
+        return view('layouts.pendidikan', compact('articles'));
+    }
+
+    public function pelayanan()
+    {
+        $articles = $this->getArticlesByCategory('pelayanan');
+        return view('layouts.pelayanan', compact('articles'));
+    }
+
+    public function dukungan()
+    {
+        $articles = $this->getArticlesByCategory('dukungan');
+        return view('layouts.dukungan', compact('articles'));
+    }
+
+    /**
+     * Menampilkan Detail Artikel untuk dibaca User
+     */
+    public function show($slug)
+    {
+        $artikel = Artikel::where('slug', $slug)->firstOrFail();
+        
+        // Mengambil artikel terkait (random) untuk sidebar
+        $related_articles = Artikel::where('category', $artikel->category)
+                            ->where('id', '!=', $artikel->id)
+                            ->limit(3)
+                            ->get();
+
+        return view('layouts.detail_artikel', compact('artikel', 'related_articles'));
     }
 }
